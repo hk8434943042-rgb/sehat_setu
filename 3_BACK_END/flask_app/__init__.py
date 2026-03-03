@@ -14,10 +14,10 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('flask_app.config')
 
-    # Enable CORS for frontend development
+    # Enable CORS for frontend (local + deployed clients)
     CORS(app, resources={
         r"/*": {
-            "origins": ["http://127.0.0.1:*", "http://localhost:*", "file://*"],
+            "origins": "*",
             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type"]
         }
