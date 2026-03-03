@@ -1,0 +1,19 @@
+[
+    {
+      "name": "Sehat Setu Care Hospital",
+      "address": "Bailey Road, Bailey Road",
+      "area": "Bailey Road",
+      "city": "Patna",
+      "state": "Bihar",
+      "phone": "0612-123456",
+      "website": "https://sehatsetu.example.com",
+      "type": "Private",
+      "emergency": true,
+      "opdPriceMin": 300,
+      "opdPriceMax": 800,
+      "teleFee": 250,
+      "specialties": ["Cardiology", "Orthopedics", "Pediatrics"],
+      "services": ["ICU", "OPD", "Emergency", "Pharmacy", "Lab", "X-Ray", "MRI", "Ambulance", "OT", "Teleconsultation"],
+      "photo": "assets/hospital-1.jpg"
+    }
+  ]

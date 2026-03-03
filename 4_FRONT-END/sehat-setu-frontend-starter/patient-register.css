@@ -1,0 +1,82 @@
+/* Patient Registration page (uses your existing tokens) */
+.ss-form-section{ padding:48px 0 72px; }
+.ss-form-header{ margin-bottom: 18px; }
+
+.ss-form{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.ss-fieldset{
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 14px 0;
+}
+.ss-fieldset > legend{ padding: 0 8px; font-weight: 700; color: var(--text); }
+
+.ss-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
+}
+@media (max-width: 720px){ .ss-grid{ grid-template-columns: 1fr; } }
+.ss-span-2{ grid-column: span 2; }
+@media (max-width: 720px){ .ss-span-2{ grid-column: span 1; } }
+
+.ss-field{ display:flex; flex-direction:column; gap:6px; }
+.ss-field label{ font-weight: 600; color: var(--text); }
+.ss-field .hint{ color: var(--muted); font-size: 12px; }
+
+.ss-field input[type="text"],
+.ss-field input[type="email"],
+.ss-field input[type="tel"],
+.ss-field input[type="date"],
+.ss-field input[type="time"],
+.ss-field input[type="number"],
+.ss-field select,
+.ss-field textarea{
+  appearance:none;
+  border:1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.ss-field textarea{ resize: vertical; }
+
+.ss-field input:focus,
+.ss-field select:focus,
+.ss-field textarea:focus{
+  outline: none;
+  box-shadow: var(--ring);
+  border-color: #A7F3D0; /* emerald highlight */
+}
+
+.req{ color:#ef4444; margin-left: 2px; }
+
+.ss-consent{ margin-top: 8px; padding: 8px 2px 2px; color: var(--muted); }
+.ss-checkbox{ display:flex; align-items:flex-start; gap:10px; }
+.ss-checkbox input{ margin-top: 4px; }
+
+.ss-actions{ display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; }
+
+/* Toast */
+.ss-toast{
+  margin-top: 12px;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+[data-theme="dark"] .ss-toast{
+  background: #064e3b;
+  color: #d1fae5;
+  border-color: #065f46;
+}

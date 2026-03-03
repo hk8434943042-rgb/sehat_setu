@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehat Setu — Services</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="services.css" />
+  <link rel="stylesheet" href="css/language-switcher.css" />
+  <link rel="stylesheet" href="css/chatbot.css" />
+
+  <script>
+    (function () {
+      const key = "carely-theme";
+      const saved = localStorage.getItem(key);
+      document.documentElement.setAttribute("data-theme", saved || "system");
+    })();
+  </script>
+</head>
+
+<body>
+
+  <!-- NAV (same as your site) -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html" aria-label="Sehat Setu Patna Home">
+        <img src="logo.jpeg" alt="Sehat Setu Logo" class="logo-img" />
+        <span class="brand__text">Sehat Setu <span style="color: var(--primary);">Patna</span></span>
+      </a>
+
+      <div class="nav-right">
+        <nav class="nav-links">
+          <a href="index.html#home" data-translate="nav.home">Home</a>
+          <a href="index.html#about" data-translate="nav.about">About</a>
+          <a href="services.html" data-translate="nav.services">Services</a>
+          <a href="hospital-list.html" data-translate="nav.hospitals">Hospitals</a>
+          <a href="patient-register.html" data-translate="nav.register">Register</a>
+        </nav>
+
+        <button class="theme-toggle" id="themeToggle">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="services-hero">
+    <div class="container">
+      <h1 class="title" data-translate="services.title">Patna Healthcare Services</h1>
+      <p class="subtitle" data-translate="services.subtitle">Access top-quality healthcare services from Patna's best hospitals and clinics.</p>
+    </div>
+  </section>
+
+  <!-- SERVICES GRID -->
+  <section class="services-section">
+    <div class="container services-grid">
+
+      <!-- OPD -->
+      <div class="service-card">
+        <div class="icon">🩺</div>
+        <h3 data-translate="services.opd.title">OPD Consultation</h3>
+        <p data-translate="services.opd.desc">Meet specialized doctors for routine checkups, diagnosis, and medical advice.</p>
+      </div>
+
+      <!-- EMERGENCY -->
+      <div class="service-card">
+        <div class="icon">🚑</div>
+        <h3 data-translate="services.emergency.title">24×7 Emergency</h3>
+        <p data-translate="services.emergency.desc">Rapid-response emergency care with trained medical staff and ambulance support.</p>
+      </div>
+
+      <!-- DIAGNOSTICS -->
+      <div class="service-card">
+        <div class="icon">🧪</div>
+        <h3 data-translate="services.diagnostics.title">Diagnostics & Lab</h3>
+        <p data-translate="services.diagnostics.desc">Blood tests, imaging, and digital reports with accurate, fast results.</p>
+      </div>
+
+      <!-- PHARMACY -->
+      <div class="service-card">
+        <div class="icon">💊</div>
+        <h3>Pharmacy</h3>
+        <p>In-house pharmacy with timely delivery and authentic medicines.</p>
+      </div>
+
+      <!-- TELECONSULTATION -->
+      <div class="service-card">
+        <div class="icon">📱</div>
+        <h3>Teleconsultation</h3>
+        <p>Consult qualified doctors online through voice or video call.</p>
+      </div>
+
+      <!-- ICU -->
+      <div class="service-card">
+        <div class="icon">🏥</div>
+        <h3>ICU & Critical Care</h3>
+        <p>Advanced life support systems and trained specialists available 24×7.</p>
+      </div>
+
+      <!-- SURGERY -->
+      <div class="service-card">
+        <div class="icon">🔪</div>
+        <h3>Surgery & OT</h3>
+        <p>Modern operation theatres for minor and major surgical procedures.</p>
+      </div>
+
+      <!-- HEALTH PACKAGES -->
+      <div class="service-card">
+        <div class="icon">🩸</div>
+        <h3>Health Checkup Packages</h3>
+        <p>Affordable packages for diabetics, cardiac conditions, senior citizens, and more.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    const THEME_KEY = "carely-theme";
+    const html = document.documentElement;
+    const icon = document.getElementById("themeIcon");
+
+    function applyTheme(m) {
+      html.setAttribute("data-theme", m);
+      const dark = m === "dark" || (m === "system" && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      icon.textContent = dark ? "☀️" : "🌙";
+    }
+
+    document.getElementById("themeToggle")?.addEventListener("click", () => {
+      const cur = html.getAttribute("data-theme") || "system";
+      const next = cur === "system" ? "dark" : cur === "dark" ? "light" : "system";
+      localStorage.setItem(THEME_KEY, next);
+      applyTheme(next);
+    });
+
+    applyTheme(localStorage.getItem(THEME_KEY) || "system");
+  </script>
+
+  <!-- Language & Theme Management Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/language-switcher.js"></script>
+  <script src="js/ai-conversation.js"></script>
+  <script src="js/chatbot-enhanced.js"></script>
+
+</body>
+</html>

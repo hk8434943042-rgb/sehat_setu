@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Hospital - Sehat Setu Admin</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="patient-register.css" />
+  <link rel="stylesheet" href="css/language-switcher.css" />
+  <style>
+    .brand-highlight {
+      color: var(--primary);
+    }
+
+    .admin-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: 60vh;
+    }
+
+    .admin-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .admin-header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .admin-header p {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-field label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .form-field textarea {
+      resize: vertical;
+      min-height: 100px;
+      grid-column: 1 / -1;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .success-message {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    .success-message.show {
+      display: block;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .error-message {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .loading-spinner.show {
+      display: block;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 3px solid var(--border);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .image-help-text {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .req {
+      color: #ef4444;
+    }
+
+    .facility-textarea {
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+
+    .btn-link {
+      text-decoration: none;
+    }
+
+    .image-upload-wrapper {
+      grid-column: 1 / -1;
+    }
+
+    .image-upload-input {
+      display: none;
+    }
+
+    .image-upload-label {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    .image-upload-label:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .image-preview-container {
+      display: none;
+      margin-top: 1rem;
+    }
+
+    .image-preview-container.show {
+      display: block;
+    }
+
+    .image-preview {
+      max-width: 300px;
+      max-height: 300px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      object-fit: cover;
+    }
+
+    .image-remove-btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .image-remove-btn:hover {
+      background: #dc2626;
+    }
+
+    @media (max-width: 640px) {
+      .admin-container {
+        padding: 1rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html#home" aria-label="Sehat Setu Patna Home">
+        <img src="logo.jpeg" alt="Sehat Setu Logo" class="logo-img" />
+        <span class="brand__text">Sehat Setu <span class="brand-highlight">Patna</span></span>
+      </a>
+
+      <div class="nav-right">
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html#home" data-translate="nav.home">Home</a>
+          <a href="hospital-list.html" data-translate="nav.hospitals">Hospitals</a>
+          <a href="hospital-compare.html">Compare</a>
+          <a href="patient-register.html" data-translate="nav.register">Register</a>
+          <a class="cta" href="index.html#contact" data-translate="nav.contact">Get In Touch</a>
+        </nav>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" title="Toggle theme">
+          <span id="themeIcon" aria-hidden="true">🌙</span>
+        </button>
+
+        <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" id="menuBtn">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="container mobile-menu" id="mobileMenu" aria-label="Mobile">
+      <a href="index.html#home" class="mm-link" data-translate="nav.home">Home</a>
+      <a href="hospital-list.html" class="mm-link" data-translate="nav.hospitals">Hospitals</a>
+      <a href="hospital-compare.html" class="mm-link">Compare</a>
+      <a href="patient-register.html" class="mm-link" data-translate="nav.register">Register</a>
+      <a class="cta" href="index.html#contact" data-translate="nav.contact">Get In Touch</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="admin-container">
+    <div class="admin-header">
+      <h1>🏥 Add Hospital to Database</h1>
+      <p>Fill in the hospital details below to add a new hospital to Sehat Setu</p>
+    </div>
+
+    <div id="successMessage" class="success-message"></div>
+    <div id="errorMessage" class="error-message"></div>
+    <div id="loadingSpinner" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Adding hospital...</p>
+    </div>
+
+    <form id="addHospitalForm" class="ss-form" novalidate>
+      <div class="form-grid">
+        <!-- Basic Information -->
+        <div class="form-field">
+          <label for="name">Hospital Name <span class="req">*</span></label>
+          <input type="text" id="name" name="name" required placeholder="e.g., Apollo Hospital" />
+        </div>
+
+        <div class="form-field">
+          <label for="type">Type <span class="req">*</span></label>
+          <select id="type" name="type" required>
+            <option value="">Select Type</option>
+            <option value="Private">Private</option>
+            <option value="Government">Government</option>
+            <option value="Nonprofit">Nonprofit</option>
+          </select>
+        </div>
+
+        <!-- Location -->
+        <div class="form-field">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" placeholder="Street address" />
+        </div>
+
+        <div class="form-field">
+          <label for="area">Area</label>
+          <input type="text" id="area" name="area" placeholder="e.g., Boring Road" />
+        </div>
+
+        <div class="form-field">
+          <label for="city">City <span class="req">*</span></label>
+          <select id="city" name="city" required>
+            <option value="">Select City</option>
+            <option value="Patna">Patna</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Bangalore">Bangalore</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Chennai">Chennai</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Pune">Pune</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Jaipur">Jaipur</option>
+            <option value="Lucknow">Lucknow</option>
+            <option value="Chandigarh">Chandigarh</option>
+            <option value="Indore">Indore</option>
+            <option value="Kochi">Kochi</option>
+            <option value="Visakhapatnam">Visakhapatnam</option>
+            <option value="Surat">Surat</option>
+            <option value="Vadodara">Vadodara</option>
+            <option value="Nagpur">Nagpur</option>
+            <option value="Agra">Agra</option>
+            <option value="Ranchi">Ranchi</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="pincode">Pincode</label>
+          <input type="text" id="pincode" name="pincode" placeholder="e.g., 800001" />
+        </div>
+
+        <!-- Contact Information -->
+        <div class="form-field">
+          <label for="contact_phone">Contact Phone</label>
+          <input type="tel" id="contact_phone" name="contact_phone" placeholder="+91 6200000000" />
+        </div>
+
+        <div class="form-field">
+          <label for="contact_email">Contact Email</label>
+          <input type="email" id="contact_email" name="contact_email" placeholder="contact@hospital.com" />
+        </div>
+
+        <div class="form-field">
+          <label for="website">Website</label>
+          <input type="url" id="website" name="website" placeholder="https://hospital.com" />
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-field image-upload-wrapper">
+          <label for="hospitalImage" class="image-upload-label">📸 Upload Hospital Image</label>
+          <input type="file" id="hospitalImage" class="image-upload-input" accept="image/*" />
+          <div id="imagePreviewContainer" class="image-preview-container">
+            <img id="imagePreview" class="image-preview" alt="Hospital preview" />
+            <button type="button" class="image-remove-btn" onclick="removeImage()">Remove Image</button>
+          </div>
+          <p class="image-help-text">Recommended: JPG or PNG, max 5MB</p>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="form-field">
+          <label for="facilities_json">Facilities (JSON)</label>
+          <textarea id="facilities_json" name="facilities_json" class="facility-textarea" placeholder='{"Emergency": true, "ICU": true, "OT": true, "Pharmacy": true}'></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add Hospital</button>
+        <button type="reset" class="btn btn-ghost">Clear Form</button>
+        <a href="hospital-list.html" class="btn btn-ghost btn-link">Back to Hospitals</a>
+      </div>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🏥 Sehat Setu</h3>
+          <p>Your health partner, connecting you to quality healthcare</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="hospital-list.html">Find Hospitals</a>
+          <a href="services.html">Our Services</a>
+          <a href="patient-register.html">Patient Registration</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Sehat Setu. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script>
+    const form = document.getElementById('addHospitalForm');
+    const successMsg = document.getElementById('successMessage');
+    const errorMsg = document.getElementById('errorMessage');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+
+    function showMessage(type, message) {
+      if (type === 'success') {
+        successMsg.textContent = `✅ ${message}`;
+        successMsg.classList.add('show');
+        errorMsg.classList.remove('show');
+        setTimeout(() => {
+          successMsg.classList.remove('show');
+        }, 4000);
+      } else {
+        errorMsg.textContent = `⚠️ ${message}`;
+        errorMsg.classList.add('show');
+        successMsg.classList.remove('show');
+        setTimeout(() => {
+          errorMsg.classList.remove('show');
+        }, 5000);
+      }
+    }
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        loadingSpinner.classList.add('show');
+      } else {
+        loadingSpinner.classList.remove('show');
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData);
+
+      // Validate required fields
+      if (!payload.name || !payload.type || !payload.city) {
+        showMessage('error', 'Please fill in all required fields (Name, Type, City)');
+        return;
+      }
+
+      // Parse facilities JSON if provided
+      if (payload.facilities_json) {
+        try {
+          payload.facilities_json = JSON.parse(payload.facilities_json);
+        } catch (err) {
+          showMessage('error', 'Invalid JSON format in Facilities field');
+          return;
+        }
+      }
+
+      // Handle image if selected
+      const imageInput = document.getElementById('hospitalImage');
+      if (imageInput.files && imageInput.files[0]) {
+        try {
+          const base64Image = await fileToBase64(imageInput.files[0]);
+          payload.photo = base64Image;
+        } catch (err) {
+          showMessage('error', 'Failed to process image. Please try again.');
+          return;
+        }
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await API.createHospital(payload);
+        setLoading(false);
+        
+        showMessage('success', 'Hospital added successfully! 🎉');
+        form.reset();
+        removeImage();
+        document.getElementById('city').value = '';
+        
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'hospital-list.html';
+        }, 2000);
+      } catch (error) {
+        setLoading(false);
+        showMessage('error', error.message || 'Failed to add hospital. Please check your input and try again.');
+      }
+    });
+
+    // Helper function to convert file to base64
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+    // Image preview handler
+    const imageInput = document.getElementById('hospitalImage');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const imagePreview = document.getElementById('imagePreview');
+
+    imageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        // Validate file size (5MB max)
+        if (file.size > 5 * 1024 * 1024) {
+          showMessage('error', 'Image size must be less than 5MB');
+          imageInput.value = '';
+          imagePreviewContainer.classList.remove('show');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imagePreview.src = e.target.result;
+          imagePreviewContainer.classList.add('show');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imagePreviewContainer.classList.remove('show');
+      }
+    });
+
+    function removeImage() {
+      imageInput.value = '';
+      imagePreviewContainer.classList.remove('show');
+    }
+
+    form.addEventListener('reset', () => {
+      removeImage();
+    });
+  </script>
+
+  <!-- Theme Manager -->
+  <script>
+    (()=>{
+      const THEME_KEY='carely-theme', html=document.documentElement, icon=document.getElementById('themeIcon');
+      function apply(mode){
+        html.setAttribute('data-theme', mode);
+        const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = mode==='dark' || (mode==='system' && prefersDark);
+        if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+      }
+      function next(cur){ if (cur==='system') return 'dark'; if (cur==='dark') return 'light'; return 'system'; }
+      const saved=localStorage.getItem(THEME_KEY)||html.getAttribute('data-theme')||'system';
+      apply(saved);
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', ()=>{ if((localStorage.getItem(THEME_KEY)||'system')==='system') apply('system'); });
+      document.getElementById('themeToggle')?.addEventListener('click', ()=>{ const cur=html.getAttribute('data-theme')||'system'; const n=next(cur); localStorage.setItem(THEME_KEY,n); apply(n); });
+    })();
+  </script>
+
+  <!-- Mobile Menu Handler -->
+  <script>
+    (function () {
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+      function closeMenu(){ menu.style.display='none'; btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+      function openMenu(){ menu.style.display='flex'; btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+      btn.addEventListener('click', (e)=>{ e.stopPropagation(); (menu.style.display==='flex') ? closeMenu() : openMenu(); });
+      document.addEventListener('click', (e)=>{ if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu(); });
+      window.addEventListener('resize', ()=>{ if (window.innerWidth > 980) closeMenu(); });
+      menu.querySelectorAll('.mm-link, .cta').forEach(el => el.addEventListener('click', closeMenu));
+    })();
+  </script>
+</body>
+</html>

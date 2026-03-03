@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "Sehat Setu Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:5000/"
+      }
+    },
+    {
+      "name": "List Hospitals",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:5000/hospitals"
+      }
+    },
+    {
+      "name": "Hospital Detail",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:5000/hospital/1"
+      }
+    },
+    {
+      "name": "Search",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:5000/search?q=care"
+      }
+    },
+    {
+      "name": "Create Hospital",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Ruban Memorial Hospital\", \"area\": \"Patna\", \"contact_phone\": \"9876543210\", \"city\": \"Patna\"}"
+        },
+        "url": "http://127.0.0.1:5000/admin/hospital"
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+Hospital Name,Address,Area,Phone,Website,Facilities,Type,Emergency
+Ford Hospital,"Bailey Road, Patna",Bailey Road,0612-123456,https://fordhospital.in,"ICU, OT, MRI, Ambulance",Private,Yes
+Ruban Memorial Hospital,"Patliputra Colony, Patna",Patliputra,0612-2262536,https://rubanpatliputra.com,"ICU, OT, NICU, MRI",Private,Yes
+IGIMS Patna,"Sheikhpura, Patna",Sheikhpura,0612-2297631,http://igims.org,"ICU, OT, Emergency, Dialysis",Government,Yes

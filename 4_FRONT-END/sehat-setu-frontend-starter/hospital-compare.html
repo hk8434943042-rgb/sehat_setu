@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compare Hospitals - Sehat Setu</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="hospital-list.css" />
+  <link rel="stylesheet" href="css/hospital-enhanced.css" />
+  <link rel="stylesheet" href="css/language-switcher.css" />
+  <style>
+    .brand-highlight {
+      color: var(--primary);
+    }
+
+    .compare-hero {
+      padding: 48px 0 72px;
+    }
+
+    .compare-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .comparison-header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+    }
+
+    .comparison-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .comparison-header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 200px repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      overflow-x: auto;
+    }
+
+    .comparison-actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .feature-header {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .feature-label {
+      font-weight: 700;
+      padding: 1.5rem 1rem;
+      background: var(--card-bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      color: var(--text);
+      border: 2px solid var(--border);
+      position: sticky;
+      left: 0;
+      z-index: 2;
+    }
+
+    .hospital-column {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 2px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .hospital-column:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .hospital-header-compare {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .hospital-name-compare {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-value {
+      padding: 1rem;
+      text-align: center;
+      color: var(--text);
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feature-value:last-child {
+      border-bottom: none;
+    }
+
+    .value-best {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      font-weight: 700;
+    }
+
+    .value-icon {
+      font-size: 1.5rem;
+    }
+
+    .select-hospitals {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .hospital-selector {
+      min-width: 250px;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hospital-selector:hover {
+      border-color: var(--primary);
+    }
+
+    .hospital-selector:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+    }
+
+    .compare-btn {
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
+    }
+
+    .compare-link-btn {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+    }
+
+    .loading,
+    .error-container {
+      margin: 1rem 0;
+    }
+
+    .footer {
+      margin-top: 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer-content {
+      padding: 28px 0 14px;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 24px;
+    }
+
+    .footer-brand h3,
+    .footer-links h4 {
+      margin: 0 0 10px;
+      color: var(--text);
+    }
+
+    .footer-brand p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-right: 14px;
+      font-weight: 600;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-600);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding: 12px 0 20px;
+      color: var(--muted);
+    }
+
+    .is-hidden {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .compare-hero {
+        padding: 26px 0 56px;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 150px repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html#home" aria-label="Sehat Setu Patna Home">
+        <img src="logo.jpeg" alt="Sehat Setu Logo" class="logo-img" />
+        <span class="brand__text">Sehat Setu <span class="brand-highlight">Patna</span></span>
+      </a>
+
+      <div class="nav-right">
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html#home" data-translate="nav.home">Home</a>
+          <a href="index.html#about" data-translate="nav.about">About</a>
+          <a href="services.html" data-translate="nav.services">Services</a>
+          <a href="hospital-list.html" data-translate="nav.hospitals">Hospitals</a>
+          <a href="patient-register.html" data-translate="nav.register">Register</a>
+          <a class="cta" href="index.html#contact" data-translate="nav.contact">Get In Touch</a>
+        </nav>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" title="Toggle theme">
+          <span id="themeIcon" aria-hidden="true">🌙</span>
+        </button>
+
+        <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" id="menuBtn">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="container mobile-menu" id="mobileMenu" aria-label="Mobile">
+      <a href="index.html#home" class="mm-link" data-translate="nav.home">Home</a>
+      <a href="index.html#about" class="mm-link" data-translate="nav.about">About</a>
+      <a href="services.html" class="mm-link" data-translate="nav.services">Services</a>
+      <a href="hospital-list.html" class="mm-link" data-translate="nav.hospitals">Hospitals</a>
+      <a href="patient-register.html" class="mm-link" data-translate="nav.register">Register</a>
+      <a class="cta" href="index.html#contact" data-translate="nav.contact">Get In Touch</a>
+    </div>
+  </header>
+
+  <main class="hero compare-hero">
+    <div class="container compare-shell">
+      <div class="comparison-header">
+        <h1 data-translate="compare.title">🔍 Compare Patna Hospitals</h1>
+        <p data-translate="compare.subtitle">Compare top hospitals in Patna and choose the best care for your needs</p>
+      </div>
+
+      <!-- Hospital Selection -->
+      <div class="select-hospitals">
+        <select id="hospital1" class="hospital-selector" aria-label="Select first hospital">
+          <option value="">Select First Hospital</option>
+        </select>
+        
+        <select id="hospital2" class="hospital-selector" aria-label="Select second hospital">
+          <option value="">Select Second Hospital</option>
+        </select>
+        
+        <select id="hospital3" class="hospital-selector" aria-label="Select third hospital">
+          <option value="">Select Third Hospital (Optional)</option>
+        </select>
+        
+        <button class="btn btn-primary compare-btn" id="compareBtn" type="button">
+          Compare
+        </button>
+      </div>
+
+      <div class="comparison-actions">
+        <button class="btn btn-ghost" id="swapBtn" type="button">Swap First 2</button>
+        <button class="btn btn-ghost" id="clearBtn" type="button">Clear</button>
+        <button class="btn btn-ghost" id="shareBtn" type="button">Share Link</button>
+      </div>
+
+      <!-- Loading -->
+      <div id="loading" class="loading is-hidden" aria-live="polite">
+        <div class="spinner"></div>
+        <p>Loading comparison...</p>
+      </div>
+
+      <!-- Error -->
+      <div id="error" class="error-container is-hidden" role="alert"></div>
+
+      <!-- Comparison Results -->
+      <div id="comparisonResults"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>🏥 Sehat Setu</h3>
+          <p>Your health partner, connecting you to quality healthcare</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="hospital-list.html">Find Hospitals</a>
+          <a href="services.html">Our Services</a>
+          <a href="patient-register.html">Patient Registration</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Sehat Setu. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/hospital-enhanced.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/language-switcher.js"></script>
+  <script>
+    let allHospitals = [];
+
+    const selectors = ['hospital1', 'hospital2', 'hospital3'];
+    const $ = (id) => document.getElementById(id);
+
+    function setLoading(isLoading) {
+      $('loading').classList.toggle('is-hidden', !isLoading);
+    }
+
+    function hideError() {
+      $('error').classList.add('is-hidden');
+      $('error').innerHTML = '';
+    }
+
+    function getSelectedIds() {
+      return selectors
+        .map((id) => $(id).value)
+        .filter(Boolean)
+        .map((id) => Number(id));
+    }
+
+    function ensureUniqueSelections() {
+      const ids = getSelectedIds();
+      const unique = new Set(ids);
+      if (ids.length !== unique.size) {
+        showError('Please select different hospitals in each dropdown.');
+        return false;
+      }
+      return true;
+    }
+
+    // Initialize
+    async function init() {
+      try {
+        allHospitals = await API.getHospitals();
+      } catch (error) {
+        console.warn('API unavailable, loading local fallback for comparison.', error);
+        allHospitals = await loadHospitalsFallback();
+      }
+
+      try {
+        populateSelectors();
+        bindActions();
+        
+        // Check for URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const ids = urlParams.get('ids');
+        if (ids) {
+          const hospitalIds = ids.split(',').map(id => parseInt(id));
+          document.getElementById('hospital1').value = hospitalIds[0] || '';
+          document.getElementById('hospital2').value = hospitalIds[1] || '';
+          document.getElementById('hospital3').value = hospitalIds[2] || '';
+          loadComparison();
+        }
+      } catch (error) {
+        showError('Failed to load hospitals: ' + error.message);
+      }
+    }
+
+    async function loadHospitalsFallback() {
+      const res = await fetch('assets/hospitals.json');
+      if (!res.ok) throw new Error('Could not load local hospital data');
+      return res.json();
+    }
+
+    function bindActions() {
+      $('compareBtn').addEventListener('click', loadComparison);
+      $('swapBtn').addEventListener('click', swapSelectedHospitals);
+      $('clearBtn').addEventListener('click', clearSelections);
+      $('shareBtn').addEventListener('click', shareComparisonLink);
+
+      selectors.forEach((id) => {
+        $(id).addEventListener('change', () => {
+          hideError();
+          if (ensureUniqueSelections()) {
+            updateURL();
+          }
+        });
+      });
+    }
+
+    function populateSelectors() {
+      selectors.forEach(selectorId => {
+        const select = document.getElementById(selectorId);
+        allHospitals.forEach(hospital => {
+          const option = document.createElement('option');
+          option.value = hospital.id;
+          option.textContent = hospital.name;
+          select.appendChild(option);
+        });
+      });
+    }
+
+    async function loadComparison() {
+      const id1 = document.getElementById('hospital1').value;
+      const id2 = document.getElementById('hospital2').value;
+      const id3 = document.getElementById('hospital3').value;
+
+      if (!id1 || !id2) {
+        alert('Please select at least two hospitals to compare');
+        return;
+      }
+
+      if (!ensureUniqueSelections()) return;
+
+      setLoading(true);
+      document.getElementById('comparisonResults').innerHTML = '';
+      hideError();
+
+      try {
+        const ids = [id1, id2, id3].filter(Boolean);
+        const hospitals = await Promise.all(ids.map(getHospitalForComparison));
+
+        renderComparison(hospitals);
+        updateURL();
+      } catch (error) {
+        showError('Failed to load comparison: ' + error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function getHospitalForComparison(hospitalId) {
+      try {
+        return await API.getHospitalDetail(hospitalId);
+      } catch (_) {
+        const fallback = allHospitals.find((h) => Number(h.id) === Number(hospitalId));
+        if (!fallback) throw new Error('Hospital not found: ' + hospitalId);
+        return fallback;
+      }
+    }
+
+    function getFeatureValue(hospital, feature) {
+      return feature.value ? feature.value(hospital) : hospital[feature.key];
+    }
+
+    function renderComparison(hospitals) {
+      const features = [
+        { label: 'Type', key: 'type' },
+        {
+          label: 'Rating',
+          key: 'rating_avg',
+          value: (h) => Number(h.rating_avg || 0),
+          display: (v) => v > 0 ? `⭐ ${v.toFixed(1)}` : 'N/A',
+          best: 'max'
+        },
+        {
+          label: 'Doctors',
+          key: 'doctors',
+          value: (h) => Array.isArray(h.doctors) ? h.doctors.length : 0,
+          display: (v) => String(v),
+          best: 'max'
+        },
+        {
+          label: 'Specialties',
+          key: 'specialties',
+          value: (h) => {
+            if (Array.isArray(h.doctors)) return new Set(h.doctors.map(d => d.specialization).filter(Boolean)).size;
+            if (Array.isArray(h.specialties)) return h.specialties.length;
+            return 0;
+          },
+          display: (v) => String(v),
+          best: 'max'
+        },
+        {
+          label: 'Treatments',
+          key: 'treatments',
+          value: (h) => Array.isArray(h.treatments) ? h.treatments.length : 0,
+          display: (v) => String(v),
+          best: 'max'
+        },
+        {
+          label: 'Insurance Partners',
+          key: 'insurance',
+          value: (h) => Array.isArray(h.insurance) ? h.insurance.length : 0,
+          display: (v) => String(v),
+          best: 'max'
+        },
+        {
+          label: 'Cashless Available',
+          key: 'insurance',
+          value: (h) => Array.isArray(h.insurance) && h.insurance.some(i => i.cashless_available === 'Y'),
+          display: (v) => v ? '✅ Yes' : '❌ No'
+        },
+        { label: '24/7 Emergency', key: 'facilities_json', value: (h) => checkFacility(h.facilities_json, 'Emergency') || checkFacility(h.facilities_json, 'emergency'), display: (v) => v ? '✅ Yes' : '❌ No' },
+        { label: 'ICU', key: 'facilities_json', value: (h) => checkFacility(h.facilities_json, 'ICU'), display: (v) => v ? '✅ Yes' : '❌ No' },
+        { label: 'Operation Theatre', key: 'facilities_json', value: (h) => checkFacility(h.facilities_json, 'Operation Theatre') || checkFacility(h.facilities_json, 'OT'), display: (v) => v ? '✅ Yes' : '❌ No' },
+        { label: 'Ambulance', key: 'facilities_json', value: (h) => checkFacility(h.facilities_json, 'Ambulance'), display: (v) => v ? '✅ Yes' : '❌ No' },
+        { label: 'Pharmacy', key: 'facilities_json', value: (h) => checkFacility(h.facilities_json, 'Pharmacy'), display: (v) => v ? '✅ Yes' : '❌ No' },
+        { label: 'Laboratory', key: 'facilities_json', value: (h) => checkFacility(h.facilities_json, 'Laboratory') || checkFacility(h.facilities_json, 'Lab'), display: (v) => v ? '✅ Yes' : '❌ No' },
+        { label: 'Address', key: 'address', value: (h) => h.address || 'N/A', display: (v) => escapeHtml(v) },
+        { label: 'Contact', key: 'contact_phone', value: (h) => h.contact_phone || h.phone || 'N/A', display: (v) => escapeHtml(v) },
+        { label: 'Email', key: 'contact_email', value: (h) => h.contact_email || 'N/A', display: (v) => escapeHtml(v) }
+      ];
+
+      let html = '<div class="comparison-grid">';
+      
+      // Feature labels column
+      html += '<div>';
+      html += '<div class="feature-label feature-header">Feature</div>';
+      features.forEach(feature => {
+        html += `<div class="feature-label">${feature.label}</div>`;
+      });
+      html += '</div>';
+
+      const bestByFeature = features.map((feature) => {
+        if (feature.best !== 'max') return null;
+        const values = hospitals
+          .map((h) => getFeatureValue(h, feature))
+          .filter((v) => typeof v === 'number' && Number.isFinite(v));
+        if (!values.length) return null;
+        return Math.max(...values);
+      });
+
+      // Hospital columns
+      hospitals.forEach(hospital => {
+        html += '<div class="hospital-column">';
+        html += `
+          <div class="hospital-header-compare">
+            <div class="hospital-name-compare">${escapeHtml(hospital.name)}</div>
+            <div>${escapeHtml(hospital.city || '')}</div>
+            <a href="hospital-detail.html?id=${hospital.id}" class="btn btn-primary compare-link-btn">
+              View Details
+            </a>
+          </div>
+        `;
+        
+        features.forEach((feature, index) => {
+          const rawValue = getFeatureValue(hospital, feature);
+          const displayValue = feature.display ? feature.display(rawValue) : (rawValue || 'N/A');
+          
+          let cssClass = 'feature-value';
+          if (feature.best === 'max' && bestByFeature[index] !== null && rawValue === bestByFeature[index] && rawValue > 0) {
+            cssClass += ' value-best';
+          }
+          
+          html += `<div class="${cssClass}">${displayValue}</div>`;
+        });
+        
+        html += '</div>';
+      });
+
+      html += '</div>';
+      
+      document.getElementById('comparisonResults').innerHTML = html;
+    }
+
+    function checkFacility(facilitiesJson, facilityName) {
+      try {
+        if (!facilitiesJson) return false;
+        const facilities = typeof facilitiesJson === 'string' ? JSON.parse(facilitiesJson) : facilitiesJson;
+        return facilities[facilityName] === true || facilities[facilityName] === 'Y';
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('error');
+      errorDiv.innerHTML = `
+        <div class="error-message">
+          <h2>⚠️ Error</h2>
+          <p>${escapeHtml(message)}</p>
+        </div>
+      `;
+      errorDiv.classList.remove('is-hidden');
+    }
+
+    function clearSelections() {
+      selectors.forEach((id) => {
+        $(id).value = '';
+      });
+      $('comparisonResults').innerHTML = '';
+      hideError();
+      updateURL();
+    }
+
+    function swapSelectedHospitals() {
+      const first = $('hospital1').value;
+      const second = $('hospital2').value;
+      $('hospital1').value = second;
+      $('hospital2').value = first;
+      hideError();
+      updateURL();
+    }
+
+    function updateURL() {
+      const ids = getSelectedIds();
+      const url = new URL(window.location.href);
+      if (ids.length >= 2) {
+        url.searchParams.set('ids', ids.join(','));
+      } else {
+        url.searchParams.delete('ids');
+      }
+      history.replaceState({}, '', url.toString());
+    }
+
+    async function shareComparisonLink() {
+      const ids = getSelectedIds();
+      if (ids.length < 2) {
+        showError('Select at least two hospitals before sharing.');
+        return;
+      }
+      updateURL();
+      const link = window.location.href;
+      try {
+        await navigator.clipboard.writeText(link);
+        alert('Comparison link copied to clipboard');
+      } catch (_) {
+        prompt('Copy this comparison link:', link);
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    // Initialize language switcher
+    document.addEventListener('DOMContentLoaded', () => {
+      new LanguageSwitcher();
+      if (window.i18n) {
+        window.i18n.translatePage();
+      }
+    });
+  </script>
+
+  <!-- Theme Manager -->
+  <script>
+    (()=>{
+      const THEME_KEY='carely-theme', html=document.documentElement, icon=document.getElementById('themeIcon');
+      function apply(mode){
+        html.setAttribute('data-theme', mode);
+        const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = mode==='dark' || (mode==='system' && prefersDark);
+        if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+      }
+      function next(cur){ if (cur==='system') return 'dark'; if (cur==='dark') return 'light'; return 'system'; }
+      const saved=localStorage.getItem(THEME_KEY)||html.getAttribute('data-theme')||'system';
+      apply(saved);
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', ()=>{ if((localStorage.getItem(THEME_KEY)||'system')==='system') apply('system'); });
+      document.getElementById('themeToggle')?.addEventListener('click', ()=>{ const cur=html.getAttribute('data-theme')||'system'; const n=next(cur); localStorage.setItem(THEME_KEY,n); apply(n); });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+      function closeMenu(){ menu.style.display='none'; btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+      function openMenu(){ menu.style.display='flex'; btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+      btn.addEventListener('click', (e)=>{ e.stopPropagation(); (menu.style.display==='flex') ? closeMenu() : openMenu(); });
+      document.addEventListener('click', (e)=>{ if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu(); });
+      window.addEventListener('resize', ()=>{ if (window.innerWidth > 980) closeMenu(); });
+      menu.querySelectorAll('.mm-link, .cta').forEach(el => el.addEventListener('click', closeMenu));
+    })();
+  </script>
+</body>
+</html>

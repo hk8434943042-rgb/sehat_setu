@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./3_BACK_END
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_PATH=/app/data/sehat_setu.db
+    volumes:
+      - backend-data:/app/data
+      - ./3_BACK_END/logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - sehat-network
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./4_FRONT-END/sehat-setu-frontend-starter:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - sehat-network
+
+volumes:
+  backend-data:
+
+networks:
+  sehat-network:
+    driver: bridge

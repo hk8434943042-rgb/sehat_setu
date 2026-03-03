@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehat Setu — Hospitals</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Early theme boot -->
+  <script>
+    (function() {
+      var key='carely-theme', saved=localStorage.getItem(key);
+      document.documentElement.setAttribute('data-theme', saved||'system');
+    })();
+  </script>
+
+  <!-- Base styles + Page styles -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="hospital-list.css" />
+  <link rel="stylesheet" href="css/hospital-enhanced.css" />
+  <link rel="stylesheet" href="css/language-switcher.css" />
+  <link rel="stylesheet" href="css/chatbot.css" />
+</head>
+<body>
+
+  <!-- NAV (re-use your existing nav markup) -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html#home" aria-label="Sehat Setu Patna Home">
+        <img src="logo.jpeg" alt="Sehat Setu Logo" class="logo-img" />
+        <span class="brand__text">Sehat Setu <span style="color: var(--primary);">Patna</span></span>
+      </a>
+
+      <div class="nav-right">
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html#home" data-translate="nav.home">Home</a>
+          <a href="index.html#about" data-translate="nav.about">About</a>
+          <a href="index.html#services" data-translate="nav.services">Services</a>
+          <a href="hospital-list.html" class="mm-link" data-translate="nav.hospitals">Hospitals</a>
+          <a href="hospital-compare.html">Compare</a>
+          <a href="patient-register.html" data-translate="nav.register">Register</a>
+          <a class="cta" href="index.html#contact" data-translate="nav.contact">Get In Touch</a>
+        </nav>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" title="Toggle theme">
+          <span id="themeIcon" aria-hidden="true">🌙</span>
+        </button>
+
+        <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false" id="menuBtn">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="container mobile-menu" id="mobileMenu" aria-label="Mobile">
+      <a href="index.html#home" class="mm-link" data-translate="nav.home">Home</a>
+      <a href="index.html#about" class="mm-link" data-translate="nav.about">About</a>
+      <a href="index.html#services" class="mm-link" data-translate="nav.services">Services</a>
+      <a href="hospital-list.html" class="mm-link" data-translate="nav.hospitals">Hospitals</a>
+      <a href="hospital-compare.html" class="mm-link">Compare</a>
+      <a href="patient-register.html" class="mm-link" data-translate="nav.register">Register</a>
+      <a class="cta" href="index.html#contact" data-translate="nav.contact">Get In Touch</a>
+    </div>
+  </header>
+
+  <!-- ICON SPRITE -->
+  <!-- Paste the SVG ICON SPRITE block from section 3 here -->
+
+  <!-- LIST HEADER + CONTROLS -->
+  <section class="hospital-list-hero">
+    <div class="container list-controls">
+      <div>
+        <h1 class="title" data-translate="hospitals.title">Patna Hospitals</h1>
+        <p class="subtitle" data-translate="hospitals.subtitle">Explore top hospitals in Patna, compare services, and book appointments.</p>
+      </div>
+
+      <div class="controls">
+        <input type="search" id="q" placeholder="Search by name or area…" class="ctrl" data-translate-placeholder="hospitals.search" />
+        <select id="type" class="ctrl">
+          <option value="" data-translate="hospitals.allTypes">All Types</option>
+          <option data-translate="hospitals.private">Private</option>
+          <option data-translate="hospitals.government">Government</option>
+        </select>
+        <select id="emer" class="ctrl">
+          <option value="" data-translate="hospitals.emergencyAll">Emergency (All)</option>
+          <option value="yes" data-translate="hospitals.emergencyYes">Emergency: Yes</option>
+          <option value="no" data-translate="hospitals.emergencyNo">Emergency: No</option>
+        </select>
+        <a href="hospital-compare.html" class="btn btn-primary">Compare Hospitals</a>
+        <a href="admin-add-hospital.html" class="btn btn-ghost" title="Add hospital to database">➕ Add Hospital</a>
+        <button id="clearFilters" class="btn btn-ghost" data-translate="hospitals.clear">Clear</button>
+
+        <!-- Toggle data source (CSV or JSON) -->
+        <label class="switch">
+          <input type="checkbox" id="useJson" />
+          <span data-translate="hospitals.useJson">Use JSON</span>
+        </label>
+
+        <!-- CSV upload (optional override) -->
+        <label class="csv-upload">
+          <input type="file" id="csvInput" accept=".csv" />
+          <span class="btn btn-ghost" data-translate="hospitals.upload">Upload CSV</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIST GRID -->
+  <main class="hospital-list">
+    <div class="container">
+      <div id="loading" class="loading-spinner" style="display:none;">
+        <div class="spinner"></div>
+        <p>Loading hospitals...</p>
+      </div>
+      <div id="errorMessage" class="error-message" style="display:none;"></div>
+      <div id="resultsCount" class="results-count"></div>
+      <div id="hospitalGrid" class="hospital-grid"></div>
+      <div id="status" class="ss-toast" hidden></div>
+    </div>
+  </main>
+
+  <div class="stage" aria-hidden="true"></div>
+
+  <!-- PAGE SCRIPTS -->
+  <script src="js/api.js"></script>
+  <script src="js/hospital-enhanced.js"></script>
+  <script src="js/hospital-list.js"></script>
+  <script>
+    // ----- Mobile menu (shared) -----
+    (function () {
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+      function closeMenu(){ menu.style.display='none'; btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+      function openMenu(){ menu.style.display='flex'; btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+      btn.addEventListener('click', (e)=>{ e.stopPropagation(); (menu.style.display==='flex') ? closeMenu() : openMenu(); });
+      document.addEventListener('click', (e)=>{ if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu(); });
+      window.addEventListener('resize', ()=>{ if (window.innerWidth > 980) closeMenu(); });
+      menu.querySelectorAll('.mm-link, .cta').forEach(el => el.addEventListener('click', closeMenu));
+    })();
+
+    // ----- Theme toggle (shared) -----
+    (function () {
+      const THEME_KEY='carely-theme', html=document.documentElement, icon=document.getElementById('themeIcon');
+      function apply(mode){
+        html.setAttribute('data-theme', mode);
+        const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = mode==='dark' || (mode==='system' && prefersDark);
+        if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+      }
+      function next(cur){ if (cur==='system') return 'dark'; if (cur==='dark') return 'light'; return 'system'; }
+      const saved=localStorage.getItem(THEME_KEY)||html.getAttribute('data-theme')||'system';
+      apply(saved);
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', ()=>{ if((localStorage.getItem(THEME_KEY)||'system')==='system') apply('system'); });
+      document.getElementById('themeToggle')?.addEventListener('click', ()=>{ const cur=html.getAttribute('data-theme')||'system'; const n=next(cur); localStorage.setItem(THEME_KEY,n); apply(n); });
+    })();
+
+    // ----- Small CSV parser -----
+    function parseCSV(text){
+      const rows=[]; let cur='', row=[], q=false;
+      for (let i=0;i<text.length;i++){
+        const c=text[i], n=text[i+1];
+        if (c==='"'){ if(q && n==='"'){ cur+='"'; i++; } else { q=!q; } }
+        else if (c===',' && !q){ row.push(cur); cur=''; }
+        else if ((c==='\n' || c==='\r') && !q){ if (cur.length||row.length){ row.push(cur); rows.push(row); row=[]; cur=''; } }
+        else { cur+=c; }
+      }
+      if (cur.length||row.length){ row.push(cur); rows.push(row); }
+      return rows;
+    }
+    const norm = s => (s||'').trim().toLowerCase();
+
+    function rowsToObjects(rows){
+      if (!rows.length) return [];
+      const header = rows[0].map(h => norm(h));
+      return rows.slice(1).filter(r => r.some(c => (c||'').trim()!=='')).map(r=>{
+        const o={};
+        header.forEach((h,i)=> o[h]=(r[i]||'').trim());
+        return o;
+      });
+    }
+
+    // ----- Icon map for services -----
+    const serviceIconId = {
+      'icu':'icon-icu',
+      'opd':'icon-opd',
+      'emergency':'icon-emergency',
+      'pharmacy':'icon-pharmacy',
+      'lab':'icon-lab',
+      'x-ray':'icon-xray',
+      'xray':'icon-xray',
+      'mri':'icon-mri',
+      'ambulance':'icon-ambulance',
+      'ot':'icon-ot',
+      'operation theatre':'icon-ot',
+      'teleconsultation':'icon-tele',
+      'nicu':'icon-nicu',
+      'dialysis':'icon-dialysis'
+    };
+
+    // ----- Render helpers -----
+    function el(tag, cls, html){ const e=document.createElement(tag); if(cls) e.className=cls; if(html!==undefined) e.innerHTML=html; return e; }
+    function safeTel(phone){ return 'tel:' + (phone||'').replace(/[^+\d]/g,''); }
+
+    function renderCard(item){
+      // Accept both CSV-keys and JSON-keys
+      const name = item.name || item['hospital name'] || 'Hospital';
+      const address = item.address || item['address'] || '';
+      const area = item.area || item['area'] || '';
+      const city = item.city || item['city'] || '';
+      const state = item.state || item['state'] || '';
+      const phone = item.phone || item['phone'] || '';
+      const website = item.website || item['website'] || '';
+      const type = item.type || item['type'] || '';
+      const emerStr = (item.emergency===true || norm(item['emergency'])==='yes' || norm(item['emergency'])==='y' || norm(item['emergency'])==='true');
+      const photo = item.photo || item['photo'] || '';
+
+      const opdMin = item.opdPriceMin ?? item['opd price min'];
+      const opdMax = item.opdPriceMax ?? item['opd price max'];
+      const tele = item.teleFee ?? item['teleconsultation fee'];
+
+      const specs = Array.isArray(item.specialties) ? item.specialties : (item['specialties']||'').split(',').map(s=>s.trim()).filter(Boolean);
+      const services = Array.isArray(item.services) ? item.services : (item['services']||'').split(',').map(s=>s.trim()).filter(Boolean);
+
+      const card = el('article', 'hospital-card');
+
+      // Photo
+      const media = el('div','h-card__media');
+      media.innerHTML = photo ? `<img src="${photo}" alt="${name}" class="h-card__img" />`
+                              : `<div class="h-card__placeholder">🏥</div>`;
+      card.appendChild(media);
+
+      // Header
+      const header = el('div','h-card__header');
+      header.innerHTML = `
+        <div>
+          <div class="h-card__name">${name}</div>
+          <div class="h-card__loc">${[area, city, state].filter(Boolean).join(', ')}</div>
+        </div>
+        <div class="h-card__type">${type||'—'}</div>
+      `;
+      card.appendChild(header);
+
+      // Services (icons)
+      const svcWrap = el('div','h-card__services');
+      services.forEach(sv => {
+        const key = norm(sv).replace(/\s+/g,'-');
+        const iconId = serviceIconId[key] || serviceIconId[sv.toLowerCase()] || 'icon-opd';
+        const chip = el('span','svc-chip');
+        chip.innerHTML = `<svg class="svc-ico"><use href="#${iconId}"/></svg> ${sv}`;
+        svcWrap.appendChild(chip);
+      });
+      if (services.length) card.appendChild(svcWrap);
+
+      // Specialties (chips)
+      if (specs.length){
+        const sp = el('div','h-card__specs');
+        sp.innerHTML = specs.map(s=>`<span class="chip">${s}</span>`).join('');
+        card.appendChild(sp);
+      }
+
+      // Prices
+      const prices = el('div','h-card__prices');
+      let priceHtml = '';
+      if (opdMin || opdMax) priceHtml += `<div class="price-row"><span>OPD</span><strong>₹${opdMin||'-'}${opdMax?` – ₹${opdMax}`:''}</strong></div>`;
+      if (tele) priceHtml += `<div class="price-row"><span>Teleconsultation</span><strong>₹${tele}</strong></div>`;
+      if (priceHtml) { prices.innerHTML = priceHtml; card.appendChild(prices); }
+
+      // Meta + Actions
+      const meta = el('div','h-card__meta');
+      meta.innerHTML = `
+        ${address ? `<span class="meta-pill">📍 ${address}</span>` : ''}
+        ${phone ? `<span class="meta-pill">📞 ${phone}</span>` : ''}
+        ${emerStr ? `<span class="badge-emer badge-emer--yes">Emergency: Yes</span>` : `<span class="badge-emer badge-emer--no">Emergency: No</span>`}
+      `;
+      card.appendChild(meta);
+
+      const actions = el('div','h-card__actions');
+      actions.innerHTML = `
+        ${phone ? `<a class="btn btn-ghost" href="${safeTel(phone)}">Call</a>` : ''}
+        <a class="btn btn-primary" href="patient-register.html">Book Appointment</a>
+        ${website ? `<a class="h-link" href="${website}" target="_blank" rel="noopener">Visit Website ↗</a>` : ''}
+      `;
+      card.appendChild(actions);
+
+      return card;
+    }
+
+    function renderList(list){
+      const grid = document.getElementById('hospitalGrid');
+      grid.innerHTML = '';
+      list.forEach(item => grid.appendChild(renderCard(item)));
+    }
+
+    function filterData(data){
+      const q = document.getElementById('q').value.trim().toLowerCase();
+      const type = document.getElementById('type').value.trim().toLowerCase();
+      const emer = document.getElementById('emer').value;
+
+      return data.filter(item=>{
+        const name = (item.name || item['hospital name'] || '').toLowerCase();
+        const area = (item.area || item['area'] || '').toLowerCase();
+        const t = (item.type || item['type'] || '').toLowerCase();
+        const isEmer = (item.emergency===true || norm(item['emergency'])==='yes' || norm(item['emergency'])==='true');
+
+        const passQ = q ? (name.includes(q) || area.includes(q)) : true;
+        const passT = type ? t===type : true;
+        const passE = emer ? (emer==='yes' ? isEmer : !isEmer) : true;
+        return passQ && passT && passE;
+      });
+    }
+
+    // Data source + load logic
+    let allData = [];
+
+    async function loadFromCSV(path){
+      const res = await fetch(path); const text = await res.text();
+      const rows = parseCSV(text);
+      const items = rowsToObjects(rows).map(o=>{
+        // Normalize keys to JSON shape where convenient
+        return {
+          name: o['hospital name'],
+          address: o['address'],
+          area: o['area'],
+          city: o['city'],
+          state: o['state'],
+          phone: o['phone'],
+          website: o['website'],
+          type: o['type'],
+          emergency: norm(o['emergency'])==='yes' || norm(o['emergency'])==='true',
+          opdPriceMin: o['opd price min'] ? Number(o['opd price min']) : undefined,
+          opdPriceMax: o['opd price max'] ? Number(o['opd price max']) : undefined,
+          teleFee: o['teleconsultation fee'] ? Number(o['teleconsultation fee']) : undefined,
+          specialties: (o['specialties']||'').split(',').map(s=>s.trim()).filter(Boolean),
+          services: (o['services']||'').split(',').map(s=>s.trim()).filter(Boolean),
+          photo: o['photo']
+        };
+      });
+      return items;
+    }
+    async function loadFromJSON(path){
+      const res = await fetch(path); return await res.json();
+    }
+
+    async function bootstrap(){
+      const status = document.getElementById('status');
+      const useJson = document.getElementById('useJson').checked;
+
+      try{
+        status.hidden = false; status.textContent = 'Loading hospitals…';
+        allData = useJson ? await loadFromJSON('assets/hospitals.json')
+                          : await loadFromCSV('assets/hospitals.csv');
+        renderList(filterData(allData));
+        status.textContent = `Loaded ${allData.length} hospitals.`;
+        setTimeout(()=> status.hidden = true, 1500);
+      }catch(err){
+        console.error(err);
+        status.hidden=false; status.textContent='Failed to load data. Check path or server.';
+      }
+    }
+
+    // Filters
+    ['q','type','emer'].forEach(id=>{
+      document.getElementById(id).addEventListener('input', ()=> renderList(filterData(allData)));
+    });
+    document.getElementById('clearFilters').addEventListener('click', ()=>{
+      document.getElementById('q').value='';
+      document.getElementById('type').value='';
+      document.getElementById('emer').value='';
+      renderList(allData);
+    });
+    document.getElementById('useJson').addEventListener('change', bootstrap);
+
+    // Optional: CSV upload overrides current list
+    document.getElementById('csvInput').addEventListener('change', async (e)=>{
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const text = await file.text();
+      const rows = parseCSV(text);
+      allData = rowsToObjects(rows).map(o=>({
+        name: o['hospital name'], address:o['address'], area:o['area'], city:o['city'], state:o['state'],
+        phone:o['phone'], website:o['website'], type:o['type'],
+        emergency: norm(o['emergency'])==='yes' || norm(o['emergency'])==='true',
+        opdPriceMin: o['opd price min'] ? Number(o['opd price min']) : undefined,
+        opdPriceMax: o['opd price max'] ? Number(o['opd price max']) : undefined,
+        teleFee: o['teleconsultation fee'] ? Number(o['teleconsultation fee']) : undefined,
+        specialties:(o['specialties']||'').split(',').map(s=>s.trim()).filter(Boolean),
+        services:(o['services']||'').split(',').map(s=>s.trim()).filter(Boolean),
+        photo:o['photo']
+      }));
+      renderList(filterData(allData));
+      const status = document.getElementById('status');
+      status.hidden=false; status.textContent=`Loaded ${allData.length} hospitals from CSV.`;
+      setTimeout(()=> status.hidden=true, 1500);
+      e.target.value='';
+    });
+
+    // Start
+    bootstrap();
+  </script>
+
+  <!-- Language & Theme Management Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/language-switcher.js"></script>
+  <script src="js/ai-conversation.js"></script>
+  <script src="js/chatbot-enhanced.js"></script>
+  <script src="theme.js" defer></script>
+</body>
+</html>

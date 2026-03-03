@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sehat Setu - National Healthcare Management Portal</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="css/language-switcher.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background: #1a1a1a;
+      color: white;
+      padding: 10px 0;
+      border-bottom: 3px solid #ffa500;
+      font-size: 12px;
+    }
+
+    .top-bar-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .top-bar-left {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .top-bar-right {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    /* Government Header */
+    .gov-header {
+      background: linear-gradient(90deg, #003d82 0%, #004fa3 100%);
+      color: white;
+      padding: 20px 0;
+      border-bottom: 4px solid #ffa500;
+    }
+
+    .gov-header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .gov-header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+    }
+
+    .gov-emblem {
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      flex-shrink: 0;
+    }
+
+    .gov-text {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .gov-text strong {
+      font-weight: 700;
+      display: block;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      text-decoration: none;
+      color: white;
+      flex: 1;
+    }
+
+    .logo-icon {
+      font-size: 50px;
+    }
+
+    .logo-text-section h1 {
+      font-size: 26px;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-text-section p {
+      font-size: 11px;
+      margin: 3px 0 0;
+      opacity: 0.9;
+    }
+
+    .logo-text-section span {
+      color: #ffa500;
+    }
+
+    /* Main Navigation */
+    .main-nav {
+      background: white;
+      border-bottom: 2px solid #e5e7eb;
+      padding: 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .main-nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 55px;
+    }
+
+    .nav-links-top {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links-top a {
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+      padding: 5px 0;
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-links-top a:hover {
+      color: #003d82;
+      border-bottom-color: #ffa500;
+    }
+
+    .theme-toggle-top {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #666;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 30px;
+    }
+
+    /* Left Column - News & Features */
+    .content-left {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    /* Featured Section */
+    .featured-section {
+      background: white;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .featured-header {
+      background: linear-gradient(90deg, #003d82 0%, #004fa3 100%);
+      color: white;
+      padding: 15px 20px;
+      font-weight: 600;
+      font-size: 15px;
+      border-left: 4px solid #ffa500;
+    }
+
+    .featured-content {
+      padding: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .feature-item:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .feature-text h3 {
+      margin: 0 0 5px;
+      color: #003d82;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .feature-text p {
+      margin: 0;
+      color: #666;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Statistics */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      background: white;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 15px;
+      background: linear-gradient(135deg, #f0f4f8 0%, #f9fafb 100%);
+      border-radius: 4px;
+      border-left: 4px solid #003d82;
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 61, 130, 0.1);
+    }
+
+    .stat-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: #003d82;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* Right Column - Login */
+    .content-right {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+
+    .login-header {
+      background: linear-gradient(90deg, #003d82 0%, #004fa3 100%);
+      color: white;
+      padding: 20px;
+      border-bottom: 4px solid #ffa500;
+    }
+
+    .login-header h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .login-body {
+      padding: 25px;
+    }
+
+    .error-message {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 12px;
+      display: none;
+      border-left: 4px solid #dc2626;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .success-message {
+      background: #dcfce7;
+      color: #166534;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 12px;
+      display: none;
+      border-left: 4px solid #16a34a;
+    }
+
+    .success-message.show {
+      display: block;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      font-size: 13px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #003d82;
+      box-shadow: 0 0 0 3px rgba(0, 61, 130, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: #999;
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 12px;
+    }
+
+    .remember-forgot label {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .remember-forgot input[type="checkbox"] {
+      margin-right: 6px;
+      cursor: pointer;
+      width: 14px;
+      height: 14px;
+    }
+
+    .remember-forgot a {
+      color: #003d82;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .remember-forgot a:hover {
+      color: #005fa3;
+      text-decoration: underline;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(90deg, #003d82 0%, #004fa3 100%);
+      color: white;
+      border: none;
+      border-radius: 3px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 12px;
+    }
+
+    .login-btn:hover {
+      box-shadow: 0 4px 12px rgba(0, 61, 130, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .loading-spinner {
+      display: none;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .spinner-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #003d82;
+      margin: 0 3px;
+      animation: bounce 1.4s infinite;
+    }
+
+    .spinner-dot:nth-child(1) { animation-delay: -0.32s; }
+    .spinner-dot:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-8px); }
+    }
+
+    .signup-link {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .signup-link a {
+      color: #003d82;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Sidebar Cards */
+    .info-card {
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: 15px;
+      border-top: 3px solid #003d82;
+    }
+
+    .info-card h3 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: #003d82;
+      font-weight: 600;
+    }
+
+    .info-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .info-card li {
+      margin-bottom: 8px;
+    }
+
+    .info-card li:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-card a {
+      color: #003d82;
+      text-decoration: none;
+      font-size: 12px;
+      transition: color 0.2s;
+    }
+
+    .info-card a:hover {
+      color: #005fa3;
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer {
+      background: #1a1a1a;
+      color: white;
+      padding: 30px 0;
+      margin-top: 40px;
+      border-top: 3px solid #ffa500;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      font-size: 12px;
+    }
+
+    .footer-col h4 {
+      margin: 0 0 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffa500;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-col li {
+      margin-bottom: 8px;
+    }
+
+    .footer-col a {
+      color: #ddd;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: #ffa500;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .gov-header-content {
+        gap: 20px;
+      }
+
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .gov-header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .gov-header-left {
+        width: 100%;
+      }
+
+      .nav-links-top {
+        display: none;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <div class="top-bar-left">
+        <span data-i18n="topBar">A Unified Health ID Portal for India</span>
+      </div>
+      <div class="top-bar-right">
+        <select class="language-selector" id="languageSelect" title="Select language">
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+          <option value="ta">தமிழ்</option>
+          <option value="te">తెలుగు</option>
+        </select>
+        <button class="theme-toggle-top" id="themeToggleTop" aria-label="Toggle theme">
+          <span id="themeIconTop">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Government Header -->
+  <header class="gov-header">
+    <div class="gov-header-content">
+      <div class="gov-header-left">
+        <div class="gov-emblem">🇮🇳</div>
+        <div class="gov-text">
+          <strong data-i18n="govMinistry">GOVERNMENT OF INDIA</strong>
+          <span data-i18n="govDept">Ministry of Health & Family Welfare</span>
+        </div>
+      </div>
+      <a href="index.html" class="logo-section">
+        <div class="logo-icon">🏥</div>
+        <div class="logo-text-section">
+          <h1>Sehat <span>Setu</span></h1>
+          <p data-i18n="portalName">National Healthcare Management System</p>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <div class="main-nav-inner">
+      <ul class="nav-links-top">
+        <li><a href="index.html" data-i18n="home">Home</a></li>
+        <li><a href="hospital-list.html" data-i18n="findHospitals">Find Hospitals</a></li>
+        <li><a href="services.html" data-i18n="services">Services</a></li>
+        <li><a href="#" data-i18n="newsUpdates">News & Updates</a></li>
+        <li><a href="#" data-i18n="faq">FAQ</a></li>
+        <li><a href="#" data-i18n="contactUs">Contact Us</a></li>
+      </ul>
+      <button class="theme-toggle-top" id="themeToggle" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Left Column -->
+    <div class="content-left">
+      <!-- Featured Services -->
+      <div class="featured-section">
+        <div class="featured-header" data-i18n="latestUpdates">🔔 Latest Updates & Features</div>
+        <div class="featured-content">
+          <div class="feature-item">
+            <div class="feature-icon">📱</div>
+            <div class="feature-text">
+              <h3 data-i18n="digitalHealthId">Digital Health ID</h3>
+              <p data-i18n="digitalHealthIdDesc">Get your unique health identification for seamless healthcare access</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🏥</div>
+            <div class="feature-text">
+              <h3 data-i18n="hospitalNetwork">Hospital Network</h3>
+              <p data-i18n="hospitalNetworkDesc">Access to 1000+ hospitals across India with verified information</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💊</div>
+            <div class="feature-text">
+              <h3 data-i18n="medicalRecords">Medical Records</h3>
+              <p data-i18n="medicalRecordsDesc">Secure storage and easy access to your medical history</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📞</div>
+            <div class="feature-text">
+              <h3 data-i18n="appointmentBooking">Appointment Booking</h3>
+              <p data-i18n="appointmentBookingDesc">Book appointments with doctors and hospitals online</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🏥</div>
+          <div class="stat-number" id="totalHospitals">0</div>
+          <div class="stat-label" data-i18n="totalHospitalsLabel">Total Hospitals</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👨‍⚕️</div>
+          <div class="stat-number" id="totalDoctors">0</div>
+          <div class="stat-label" data-i18n="totalDoctorsLabel">Total Doctors</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Login & Info -->
+    <div class="content-right">
+      <!-- Login Card -->
+      <div class="login-card">
+        <div class="login-header">
+          <h2 data-i18n="adminLogin">🔐 Admin Login</h2>
+        </div>
+        <div class="login-body">
+          <div id="errorMessage" class="error-message"></div>
+          <div id="successMessage" class="success-message"></div>
+
+          <form id="loginForm" novalidate>
+            <div class="form-group">
+              <label for="username" data-i18n="usernameLabel">Username or Email *</label>
+              <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                placeholder="Enter username"
+                data-i18n-placeholder="usernamePlaceholder"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password" data-i18n="passwordLabel">Password *</label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Enter password"
+                data-i18n-placeholder="passwordPlaceholder"
+                required
+              />
+            </div>
+
+            <div class="remember-forgot">
+              <label>
+                <input type="checkbox" name="remember" />
+                <span data-i18n="rememberMe">Remember me</span>
+              </label>
+              <a href="#" data-i18n="forgotPassword">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-btn" data-i18n="loginNow">Login Now</button>
+
+            <div class="loading-spinner" id="loadingSpinner">
+              <div class="spinner-dot"></div>
+              <div class="spinner-dot"></div>
+              <div class="spinner-dot"></div>
+            </div>
+
+            <div class="signup-link">
+              <span data-i18n="newUser">New user?</span> <a href="#" data-i18n="registerHere">Register here</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Important Links -->
+      <div class="info-card">
+        <h3 data-i18n="importantLinks">📋 Important Links</h3>
+        <ul>
+          <li><a href="#" data-i18n="termsConditions">Terms & Conditions</a></li>
+          <li><a href="#" data-i18n="privacyPolicy">Privacy Policy</a></li>
+          <li><a href="#" data-i18n="securityGuidelines">Security Guidelines</a></li>
+          <li><a href="#" data-i18n="helpSupport">Help & Support</a></li>
+          <li><a href="#" data-i18n="contactAdmin">Contact Admin</a></li>
+        </ul>
+      </div>
+
+      <!-- System Status -->
+      <div class="info-card">
+        <h3 data-i18n="systemStatus">✅ System Status</h3>
+        <ul>
+          <li><span class="status-indicator">●</span> <span data-i18n="allServicesOperational">All services operational</span></li>
+          <li><span class="status-indicator">●</span> <span data-i18n="databaseConnected">Database connected</span></li>
+          <li><span class="status-indicator">●</span> <span data-i18n="lastUpdated">Last updated: Today</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4 data-i18n="about">About Sehat Setu</h4>
+        <ul>
+          <li><a href="#" data-i18n="aboutDesc">About Us</a></li>
+          <li><a href="#" data-i18n="missionVision">Mission & Vision</a></li>
+          <li><a href="#" data-i18n="achievements">Achievements</a></li>
+          <li><a href="#" data-i18n="mediaCenter">Media Center</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="services">Services</h4>
+        <ul>
+          <li><a href="#" data-i18n="findHospitals">Find Hospital</a></li>
+          <li><a href="#" data-i18n="bookAppointment">Book Appointment</a></li>
+          <li><a href="#" data-i18n="medicalRecords">Medical Records</a></li>
+          <li><a href="#" data-i18n="healthId">Health ID</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="faq">Resources</h4>
+        <ul>
+          <li><a href="#" data-i18n="faq">FAQ</a></li>
+          <li><a href="#" data-i18n="documentation">Documentation</a></li>
+          <li><a href="#" data-i18n="apiGuide">API Guide</a></li>
+          <li><a href="#" data-i18n="training">Training</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Government Links</h4>
+        <ul>
+          <li><a href="#" data-i18n="ministryOfHealth">Ministry of Health</a></li>
+          <li><a href="#" data-i18n="nationalHealthPortal">National Health Portal</a></li>
+          <li><a href="#" data-i18n="ndhm">NDHM</a></li>
+          <li><a href="#" data-i18n="reportIssue">Report Issue</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Language translations
+    const translations = {
+      en: {
+        topBar: 'A Unified Health ID Portal for India',
+        govMinistry: 'GOVERNMENT OF INDIA',
+        govDept: 'Ministry of Health & Family Welfare',
+        portalName: 'National Healthcare Management System',
+        home: 'Home',
+        findHospitals: 'Find Hospitals',
+        services: 'Services',
+        newsUpdates: 'News & Updates',
+        faq: 'FAQ',
+        contactUs: 'Contact Us',
+        latestUpdates: '🔔 Latest Updates & Features',
+        digitalHealthId: 'Digital Health ID',
+        digitalHealthIdDesc: 'Get your unique health identification for seamless healthcare access',
+        hospitalNetwork: 'Hospital Network',
+        hospitalNetworkDesc: 'Access to 1000+ hospitals across India with verified information',
+        medicalRecords: 'Medical Records',
+        medicalRecordsDesc: 'Secure storage and easy access to your medical history',
+        appointmentBooking: 'Appointment Booking',
+        appointmentBookingDesc: 'Book appointments with doctors and hospitals online',
+        totalHospitalsLabel: 'Total Hospitals',
+        totalDoctorsLabel: 'Total Doctors',
+        adminLogin: '🔐 Admin Login',
+        usernameLabel: 'Username or Email *',
+        usernamePlaceholder: 'Enter username',
+        passwordLabel: 'Password *',
+        passwordPlaceholder: 'Enter password',
+        rememberMe: 'Remember me',
+        forgotPassword: 'Forgot password?',
+        loginNow: 'Login Now',
+        newUser: 'New user?',
+        registerHere: 'Register here',
+        importantLinks: '📋 Important Links',
+        termsConditions: 'Terms & Conditions',
+        privacyPolicy: 'Privacy Policy',
+        securityGuidelines: 'Security Guidelines',
+        helpSupport: 'Help & Support',
+        contactAdmin: 'Contact Admin',
+        systemStatus: '✅ System Status',
+        allServicesOperational: 'All services operational',
+        databaseConnected: 'Database connected',
+        lastUpdated: 'Last updated: Today',
+        about: 'About Us',
+        aboutDesc: 'About Us',
+        missionVision: 'Mission & Vision',
+        achievements: 'Achievements',
+        mediaCenter: 'Media Center',
+        bookAppointment: 'Book Appointment',
+        healthId: 'Health ID',
+        documentation: 'Documentation',
+        apiGuide: 'API Guide',
+        training: 'Training',
+        ministryOfHealth: 'Ministry of Health',
+        nationalHealthPortal: 'National Health Portal',
+        ndhm: 'NDHM',
+        reportIssue: 'Report Issue',
+        errorFillAllFields: 'Please fill in all fields',
+        errorInvalidCredentials: 'Invalid username or password',
+        errorLoginFailed: 'Login failed. Please try again.',
+        successLoginRedirecting: 'Login successful! Redirecting...',
+      },
+      hi: {
+        topBar: 'भारत के लिए एकीकृत स्वास्थ्य आईडी पोर्टल',
+        govMinistry: 'भारत सरकार',
+        govDept: 'स्वास्थ्य और परिवार कल्याण मंत्रालय',
+        portalName: 'राष्ट्रीय स्वास्थ्यसेवा प्रबंधन प्रणाली',
+        home: 'होम',
+        findHospitals: 'अस्पताल खोजें',
+        services: 'सेवाएं',
+        newsUpdates: 'समाचार और अपडेट',
+        faq: 'सामान्य प्रश्न',
+        contactUs: 'हमसे संपर्क करें',
+        latestUpdates: '🔔 नवीनतम अपडेट और विशेषताएं',
+        digitalHealthId: 'डिजिटल स्वास्थ्य आईडी',
+        digitalHealthIdDesc: 'निर्बाध स्वास्थ्यसेवा पहुंच के लिए अपनी अद्वितीय स्वास्थ्य पहचान प्राप्त करें',
+        hospitalNetwork: 'अस्पताल नेटवर्क',
+        hospitalNetworkDesc: 'भारत भर में 1000+ अस्पतालों तक पहुंच सत्यापित जानकारी के साथ',
+        medicalRecords: 'चिकित्सा रिकॉर्ड',
+        medicalRecordsDesc: 'आपके चिकित्सा इतिहास का सुरक्षित भंडारण और आसान पहुंच',
+        appointmentBooking: 'नियुक्ति बुकिंग',
+        appointmentBookingDesc: 'डॉक्टरों और अस्पतालों के साथ ऑनलाइन नियुक्ति बुक करें',
+        totalHospitalsLabel: 'कुल अस्पताल',
+        totalDoctorsLabel: 'कुल डॉक्टर',
+        adminLogin: '🔐 व्यवस्थापक लॉगिन',
+        usernameLabel: 'उपयोगकर्ता नाम या ईमेल *',
+        usernamePlaceholder: 'उपयोगकर्ता नाम दर्ज करें',
+        passwordLabel: 'पासवर्ड *',
+        passwordPlaceholder: 'पासवर्ड दर्ज करें',
+        rememberMe: 'मुझे याद रखें',
+        forgotPassword: 'पासवर्ड भूल गए?',
+        loginNow: 'अभी लॉगिन करें',
+        newUser: 'नए उपयोगकर्ता?',
+        registerHere: 'यहाँ पंजीकृत करें',
+        importantLinks: '📋 महत्वपूर्ण लिंक',
+        termsConditions: 'नियम और शर्तें',
+        privacyPolicy: 'गोपनीयता नीति',
+        securityGuidelines: 'सुरक्षा दिशानिर्देश',
+        helpSupport: 'मदद और समर्थन',
+        contactAdmin: 'व्यवस्थापक से संपर्क करें',
+        systemStatus: '✅ सिस्टम स्थिति',
+        allServicesOperational: 'सभी सेवाएं परिचालन में हैं',
+        databaseConnected: 'डेटाबेस जुड़ा हुआ है',
+        lastUpdated: 'अंतिम अपडेट: आज',
+        about: 'हमारे बारे में',
+        aboutDesc: 'हमारे बारे में',
+        missionVision: 'मिशन और दृष्टिकोण',
+        achievements: 'उपलब्धियां',
+        mediaCenter: 'मीडिया सेंटर',
+        bookAppointment: 'नियुक्ति बुक करें',
+        healthId: 'स्वास्थ्य आईडी',
+        documentation: 'प्रलेखन',
+        apiGuide: 'API गाइड',
+        training: 'प्रशिक्षण',
+        ministryOfHealth: 'स्वास्थ्य मंत्रालय',
+        nationalHealthPortal: 'राष्ट्रीय स्वास्थ्य पोर्टल',
+        ndhm: 'एनडीएचएम',
+        reportIssue: 'समस्या की रिपोर्ट करें',
+        errorFillAllFields: 'कृपया सभी क्षेत्रों को भरें',
+        errorInvalidCredentials: 'अमान्य उपयोगकर्ता नाम या पासवर्ड',
+        errorLoginFailed: 'लॉगिन विफल। कृपया पुनः प्रयास करें।',
+        successLoginRedirecting: 'लॉगिन सफल! पुनः निर्देशित किया जा रहा है...',
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+    function t(key) {
+      return translations[currentLanguage]?.[key] || translations['en'][key] || key;
+    }
+
+    function updateLanguage(lang) {
+      currentLanguage = lang;
+      localStorage.setItem('selectedLanguage', lang);
+      
+      // Update all translatable elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = t(key);
+      });
+
+      // Update placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        el.placeholder = t(key);
+      });
+
+      // Update document direction for RTL languages if needed
+      if (lang === 'hi') {
+        document.documentElement.lang = 'hi';
+      } else {
+        document.documentElement.lang = 'en';
+      }
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateLanguage(currentLanguage);
+      
+      // Set language selector to current language
+      const languageSelect = document.getElementById('languageSelect');
+      if (languageSelect) {
+        languageSelect.value = currentLanguage;
+      }
+    });
+
+    // Fetch statistics
+    async function loadStats() {
+      try {
+        const response = await fetch('/api/hospitals/count', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          document.getElementById('totalHospitals').textContent = data.total_hospitals || 0;
+          document.getElementById('totalDoctors').textContent = data.total_doctors || 0;
+        }
+      } catch (error) {
+        // Fallback to demo data if API fails
+        console.log('Using demo statistics');
+        document.getElementById('totalHospitals').textContent = '1250+';
+        document.getElementById('totalDoctors').textContent = '12,500+';
+      }
+    }
+
+    // Load stats on page load
+    window.addEventListener('DOMContentLoaded', loadStats);
+
+    const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+
+    function showMessage(type, messageKey) {
+      const message = t(messageKey);
+      if (type === 'success') {
+        successMessage.textContent = `✓ ${message}`;
+        successMessage.classList.add('show');
+        errorMessage.classList.remove('show');
+        setTimeout(() => {
+          successMessage.classList.remove('show');
+        }, 3000);
+      } else if (type === 'error') {
+        errorMessage.textContent = `✕ ${message}`;
+        errorMessage.classList.add('show');
+        successMessage.classList.remove('show');
+        setTimeout(() => {
+          errorMessage.classList.remove('show');
+        }, 5000);
+      }
+    }
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        loadingSpinner.style.display = 'block';
+      } else {
+        loadingSpinner.style.display = 'none';
+      }
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        showMessage('error', 'errorFillAllFields');
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        // Demo credentials: admin/admin
+        if (username.toLowerCase() === 'admin' && password === 'admin') {
+          showMessage('success', 'successLoginRedirecting');
+          setTimeout(() => {
+            window.location.href = 'admin-add-hospital.html';
+          }, 1500);
+        } else {
+          showMessage('error', 'errorInvalidCredentials');
+        }
+      } catch (error) {
+        showMessage('error', 'errorLoginFailed');
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    // Theme toggle
+    const themeToggles = document.querySelectorAll('[id^="themeToggle"]');
+    const themeIcon = document.getElementById('themeIconTop');
+    const html = document.documentElement;
+    const THEME_KEY = 'carely-theme';
+
+    function applyTheme(mode) {
+      html.setAttribute('data-theme', mode);
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = mode === 'dark' || (mode === 'system' && prefersDark);
+      themeToggles.forEach(toggle => {
+        const icon = toggle.querySelector('span');
+        if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+      });
+    }
+
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'system';
+    applyTheme(savedTheme);
+
+    themeToggles.forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme') || 'system';
+        const next = current === 'system' ? 'dark' : current === 'dark' ? 'light' : 'system';
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      });
+    });
+
+    // Language selector
+    const languageSelect = document.getElementById('languageSelect');
+    languageSelect.addEventListener('change', (e) => {
+      const lang = e.target.value;
+      updateLanguage(lang);
+    });
+  </script>
+</body>
+</html>

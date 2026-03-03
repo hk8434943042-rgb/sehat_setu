@@ -1,0 +1,152 @@
+/* Language Switcher Styles */
+
+.language-switcher {
+  position: relative;
+  display: inline-block;
+}
+
+.language-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+  min-width: 50px;
+}
+
+.language-btn:hover {
+  background: var(--primary);
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.language-btn::after {
+  content: '▼';
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.language-btn.active::after {
+  transform: rotate(180deg);
+}
+
+/* Language Menu */
+.language-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 1000;
+  min-width: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  margin-top: 0.5rem;
+}
+
+.language-menu.active {
+  display: block;
+  animation: slideDown 0.2s ease-out;
+}
+
+.language-option {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  color: var(--text);
+  background: var(--card-bg);
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.language-option:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.language-option.active {
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+}
+
+.language-option::before {
+  content: '✓';
+  width: 20px;
+  display: inline-block;
+  opacity: 0;
+  font-weight: 700;
+}
+
+.language-option.active::before {
+  opacity: 1;
+}
+
+/* Language Flag Icons */
+.flag {
+  font-size: 1.2rem;
+  margin-right: 0.25rem;
+}
+
+/* Dropdown animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .language-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    min-width: 45px;
+  }
+
+  .language-menu {
+    min-width: 140px;
+  }
+
+  .language-option {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .language-menu {
+    background: var(--card-bg);
+    border-color: var(--border);
+  }
+
+  .language-option {
+    background: var(--card-bg);
+    color: var(--text);
+  }
+
+  .language-option:hover {
+    background: var(--primary);
+    color: white;
+  }
+}

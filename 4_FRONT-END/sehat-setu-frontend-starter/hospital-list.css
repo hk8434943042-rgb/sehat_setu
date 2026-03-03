@@ -1,0 +1,87 @@
+/* ===== Hospital Listing Page ===== */
+
+.hospital-list-hero{
+  padding: 24px 0 8px;
+  background:
+    radial-gradient(1000px 420px at 80% 10%, rgba(20,184,166,.10) 0%, transparent 60%),
+    linear-gradient(var(--bg), var(--bg));
+}
+.list-controls{
+  display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;
+}
+.controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.ctrl{
+  appearance:none; border:1px solid var(--border); background:var(--bg); color:var(--text);
+  border-radius:10px; padding:10px 12px; font:inherit;
+}
+.switch{ display:flex; align-items:center; gap:8px; font-weight:600; color:var(--muted); }
+.csv-upload input[type="file"]{ display:none; }
+
+/* Grid */
+.hospital-list{ padding: 10px 0 56px; }
+.hospital-grid{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:16px; }
+@media (max-width:1080px){ .hospital-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width:640px){ .hospital-grid{ grid-template-columns: 1fr; } }
+
+/* Card */
+.hospital-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display:flex; flex-direction:column; gap:10px;
+}
+.h-card__media{ width:100%; height:180px; background:var(--bg); display:grid; place-items:center; }
+.h-card__img{ width:100%; height:100%; object-fit:cover; display:block; }
+.h-card__placeholder{ font-size:34px; opacity:.5; }
+
+.h-card__header{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+  padding:12px 14px 0 14px;
+}
+.h-card__name{ font-weight:800; color:var(--text); font-size:18px; }
+.h-card__loc{ color:var(--muted); font-size:13px; }
+.h-card__type{
+  background: var(--pill); color: var(--primary-600); border:1px solid #cdeee2;
+  border-radius:999px; padding:6px 10px; font-weight:700; font-size:12px; white-space:nowrap;
+}
+
+/* Services icons */
+.h-card__services{ padding: 0 14px; display:flex; flex-wrap:wrap; gap:8px; }
+.svc-chip{
+  display:inline-flex; align-items:center; gap:6px; padding:6px 10px;
+  background: var(--bg); border:1px solid var(--border); color:var(--text);
+  border-radius:999px; font-weight:600; font-size:12px;
+}
+.svc-ico{ width:16px; height:16px; color: var(--primary); }
+
+/* Specialties */
+.h-card__specs{ padding: 0 14px; display:flex; flex-wrap:wrap; gap:8px; }
+.chip{
+  display:inline-block; background: var(--surface); color: var(--primary-600);
+  border:1px solid #cdeee2; border-radius:999px; padding:6px 10px; font-weight:700; font-size:12px;
+}
+.chip:hover{ background: var(--pill); }
+
+/* Prices */
+.h-card__prices{ padding: 0 14px; display:grid; gap:8px; }
+.price-row{
+  display:flex; align-items:center; justify-content:space-between;
+  background: var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+}
+.price-row span{ color: var(--muted); }
+.price-row strong{ color: var(--text); }
+
+/* Meta + actions */
+.h-card__meta{ padding: 0 14px; display:flex; flex-wrap:wrap; gap:8px; }
+.meta-pill{
+  display:inline-flex; align-items:center; gap:6px; background: var(--bg); border:1px solid var(--border); color:var(--text);
+  padding:6px 10px; border-radius:999px; font-weight:600; font-size:12px;
+}
+.badge-emer{ color:#fff; background:#6b7280; border-radius:999px; padding:4px 10px; font-weight:700; font-size:12px; }
+.badge-emer--yes{ background:#ef4444; }
+
+.h-card__actions{ padding: 0 14px 14px 14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.h-link{ color: var(--accent); text-decoration:none; font-weight:700; }
+.logo-img{ height: 32px; width:auto; display:block; }

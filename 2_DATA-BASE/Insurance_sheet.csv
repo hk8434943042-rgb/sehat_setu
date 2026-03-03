@@ -1,0 +1,24 @@
+Date,Particualars,Debit ($),Credit,account type
+07/01/2026, Prepaid Insurance A/c ,60000,Asset (Balance Sheet) ,Annual premium paid in advance 
+08/01/2026,Cash/Bank A/c ,60000,Asset (Balance Sheet) ,Payment for insurance
+25/01/2026,Insurance Expense A/c,80000,Asset (Balance Sheet) ,3 months premium expired 
+26/01/2026,Prepaid Insurance A/c,80000,Asset (Balance Sheet) ,Adjusting entry for expired portion 
+30/01/2026,Insurance Expense A/c,50000,Expense(P& L),Next quarter premium expired
+31/01/2026,Prepaid Insurance A/c,50000,Asset (Balance Sheet) ,Adjusting entry for expired portion 
+,,,,
+,,,,
+" Insurance Entries Formatting
+",,,,
+,,,,
+,,,,
+Consistency Check (Y/N):,,,,
+,,,,
+Policy ID Customer Name City Premium Status (Y/N),,,,
+Policy ID,Customer Name,city,Premium,Status
+PAT001,ANIL Kumar ,Patna ,12500,Y
+PAT002,RINA SHARMA,Patna ,9800,Y
+PAT003,SURESH SINGH ,Patna ,15200,Y
+PAT004,PRIYA VERMA,Patna ,11000,Y
+PAT005,RAJESH GUPTA ,Patna ,13400,Y
+PAT006,NEHA JHA,Patna ,10600,y
+PAT007,MANOJ DAS ,Patna ,14700,y

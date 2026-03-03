@@ -1,0 +1,6 @@
+Hospital Name,Treatment name,Cost Minimum,Cost Maximum,Notes
+Ford Hospital,Normal Delivery,18000,35000,Room charges extra
+Mediversal,Cesarean Delivery,40000,70000,NICU extra
+Paras,Cataract Surgery,15000,30000,Lens dependent
+Ruban,Appendectomy,20000,45000,Laparoscopic
+PMCH,Gallbladder Removal,35000,60000,Laparoscopic
