@@ -3,9 +3,9 @@
 // 1) localStorage.SEHAT_API_BASE_URL
 // 2) window.SEHAT_API_BASE_URL
 // 3) localhost default
-// 4) production placeholder (set this to your deployed backend URL)
+// 4) production backend (Render)
 const DEFAULT_LOCAL_API_BASE_URL = 'http://127.0.0.1:5000';
-const DEFAULT_PROD_API_BASE_URL = 'https://your-backend-domain.com';
+const DEFAULT_PROD_API_BASE_URL = 'https://sehat-setu-api.onrender.com';
 
 const API_BASE_URL = (
   localStorage.getItem('SEHAT_API_BASE_URL') ||
